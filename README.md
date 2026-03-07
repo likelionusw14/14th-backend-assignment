@@ -18,3 +18,43 @@ backend/
 | 이름 | GitHub |
 |------|--------|
 | 홍길동 | @honggildong |
+
+### 수강생 과제 제출 플로우
+
+**최초 1회 (1주차)**
+
+```bash
+# 1. Organization 레포 Fork
+#    github.com/likelion-suwon-14th/backend → Fork 버튼
+
+# 2. 내 계정으로 Clone
+git clone https://github.com/본인계정/backend.git
+cd backend
+
+# 3. upstream 연결 (원본 레포 변경사항 받아오기 위해)
+git remote add upstream https://github.com/likelion-suwon-14th/backend.git
+```
+
+**매주 반복**
+
+```bash
+# 1. upstream에서 최신 변경사항 받기 (새 주차 폴더 생겼을 때)
+git fetch upstream
+git merge upstream/main
+
+# 2. 내 브랜치 생성
+git checkout -b honggildong/week2
+
+# 3. 내 폴더에 과제 작성
+#    week2/홍길동/assignment1.py
+#    week2/홍길동/assignment2.py
+
+# 4. 커밋 & 푸시
+git add .
+git commit -m "feat: week2 과제 제출 - 홍길동"
+git push origin honggildong/week2
+
+# 5. GitHub에서 PR 생성
+#    base: likelion-suwon-14th/backend:main
+#    compare: 본인계정/backend:honggildong/week2
+```
