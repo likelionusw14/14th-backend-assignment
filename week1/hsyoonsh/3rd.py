@@ -3,11 +3,13 @@ class Member:
         if not name or not name.strip():
             raise ValueError("⚠️ 이름은 비어 있을 수 없습니다.")
         self.name = name
+
     def get_role(self):
         pass
 
     def get_info(self):
         pass
+
 
 class Lion(Member):
     def __init__(self, name, track, generation):
@@ -22,6 +24,7 @@ class Lion(Member):
 
     def get_info(self):
         return f"{self.name} | {self.track} | {self.generation}"
+
 
 class Staff(Member):
     def __init__(self, name):
@@ -46,18 +49,14 @@ class MemberPrinter:
         if not members:
             print("- 등록된 멤버가 없습니다.")
             return
-        
-        # 정렬 정책에 따라 리스트 정렬
         sorted_members = self.sort_strategy.sort(members)
         for m in sorted_members:
-            # 다형성 활용: m이 Lion인지 Staff인지 묻지 않고 동일한 메서드 호출
             print(f"- {m.get_role()} : {m.get_info()}")
         print()
-
 class MembershipManager:
     def __init__(self):
         self.members = []
-        self.printer = MemberPrinter(NameSortStrategy()) 
+        self.printer = MemberPrinter(NameSortStrategy()) # 기본 정렬: 이름순
 
     def run(self):
         while True:
@@ -93,7 +92,6 @@ class MembershipManager:
         new_staff = Staff(name)
         self.members.append(new_staff)
         print("✅ 운영진이 등록되었습니다.\n")
-
 
 if __name__ == "__main__":
     manager = MembershipManager()

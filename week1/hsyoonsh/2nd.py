@@ -2,7 +2,7 @@ def register_lion(lion_list):
     name = input("🦁 이름을 입력하세요: ")
     track = input("📚 트랙을 입력하세요: ")
     generation = input("🎓 기수를 입력하세요: ")
-    
+
     lion_info = {
         "name": name,
         "track": track,
@@ -13,10 +13,6 @@ def register_lion(lion_list):
     print("✅ 아기사자가 등록되었습니다.\n")
 
 def search_by_name(lion_list):
-    """
-    [이름 검색 기능]
-    이름을 입력받아 리스트 내의 딕셔너리를 순회하며 일치하는 정보를 출력합니다.
-    """
     search_name = input("🔍 검색할 이름을 입력하세요: ")
     found = False
     
@@ -27,9 +23,7 @@ def search_by_name(lion_list):
             print(f"트랙: {lion['track']}")
             print(f"기수: {lion['generation']}\n")
             found = True
-            break 
-            
-    # 반복문을 다 돌았는데도 found가 False라면 검색 결과가 없는 것임
+            break  
     if not found:
         print("⚠️  해당 이름의 아기사자를 찾을 수 없습니다.\n")
 
@@ -48,7 +42,7 @@ def filter_by_track(lion_list):
 
 
 def main():
-    lion_list = []  # 여러 명의 아기사자 딕셔너리를 저장할 메인 리스트
+    lion_list = []  
     
     while True:
         print("기능을 선택하세요")
