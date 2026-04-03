@@ -18,6 +18,7 @@ def print_Comment():
                 names.append(name)
                 print(f"'{name}' 이(가) 등록되었습니다.")
 
+
 # 아기 사자 명단 출력
 def print_List(name):
     print("현재 아기 사자 명단입니다.")
@@ -26,6 +27,6 @@ def print_List(name):
         print(f"{i+1}. {name[i]}")
         
 names = []
-print("아기 사자 명단 관리 프로그램입니다.")
+print("아기 사자 명단 관리 프로그램입니다!")
 print_Comment()
 print_List(names)

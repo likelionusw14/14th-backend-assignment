@@ -52,9 +52,10 @@ def add_lion(member):
 def add_admin(member):
     name = input("이름: ").strip()
     admin = Member(Staff(name))
-    print("운영진이 등록되었습니다")
+    print("운영진이 등록되었습니다!")
 
-#출력 
+
+#출력  
 def print_menu(member):
     while True:
         print("기능을 선택하세요")

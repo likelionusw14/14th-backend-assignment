@@ -50,8 +50,9 @@ def print_menu(lion):
         elif choice == "3":
             retrieve_lion(lion_list)
         elif choice =="4":
-            print("프로그램을 종료합니다.")
+            print("프로그램을 종료합니다!")
             break
 
-lion_list = []
+
+lion_list = [] 
 print_menu(lion_list)
