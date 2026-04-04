@@ -1,0 +1,10 @@
+{% extends 'baby_lion/base.html' %} {% block content %} {% if lion %}
+<h1>{{ lion.name }}</h1>
+<p>트랙: {{ lion.track }}</p>
+{% if lion.is_present %}
+<p>✅ 출석</p>
+{% else %}
+<p>❌ 결석</p>
+{% endif %} {% else %}
+<p>해당 아기사자를 찾을 수 없습니다.</p>
+{% endif %} {% endblock %}
