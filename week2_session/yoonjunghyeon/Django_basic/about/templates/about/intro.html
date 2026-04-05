@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로필 카드</title>
+    <style>
+      body {
+        font-family:
+          "Pretendard",
+          -apple-system,
+          sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .profile-card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 90px;
+        width: 900px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 32px;
+        color: #333;
+      }
+      .job {
+        color: #999;
+        margin: 10px 0 20px 0;
+        font-size: 18px;
+      }
+      .intro {
+        color: #555;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+      .section-title {
+        font-weight: bold;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+      .badge-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      }
+      .badge {
+        background-color: #5899d3;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .contact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-card">
+      <h1>{{ name }}</h1>
+      <div class="job">{{ job }}</div>
+      <p class="intro">안녕하세요! 웹 개발을 좋아하는 개발자입니다.</p>
+
+      <div class="section-title">기술 스택</div>
+      <div class="badge-container">
+        {% for s in skill %}
+        <span class="badge">{{ s }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="section-title">연락처</div>
+      <div class="contact">
+        <span>📧</span>
+        <span>{{ mail }}</span>
+      </div>
+    </div>
+  </body>
+</html>
