@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>환영합니다!</h1>
+    <p>아기사자 관리 웹 페이지입니다.</p>
+    <a href="/lions/">아기사자 목록 보기</a>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lions</title>
+</head>
+<body>
+    <h1>아기사자 목록</h1>
+    <ul>
+        {% for lion in lions %}
+            <li>{{ lion.name }}</li>
+        {% empty %}
+            <li>등록된 아기사자가 없습니다.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/">홈으로 돌아가기</a>
+</body>
+
+</html>
