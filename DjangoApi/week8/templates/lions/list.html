@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 관리 서비스 (Week8)</title>
+</head>
+<body>
+    <h1>🦁 아기사자 관리 서비스</h1>
+    <hr>
+    <h2>아기사자 목록</h2>
+
+    <form method="GET">
+        <select name="track">
+            <option value="">전체 트랙</option>
+            <option value="Django" {% if selected_track == "Django" %}selected{% endif %}>Django</option>
+            <option value="SpringBoot" {% if selected_track == "SpringBoot" %}selected{% endif %}>SpringBoot</option>
+            <option value="Frontend" {% if selected_track == "Frontend" %}selected{% endif %}>Frontend</option>
+            <option value="Design" {% if selected_track == "Design" %}selected{% endif %}>Design</option>
+        </select>
+        <input type="text" name="keyword" placeholder="이름 검색" value="{{ keyword }}">
+        <button type="submit">검색</button>
+    </form>
+
+    <ul>
+        {% for lion in lions %}
+            <li>
+                <a href="{% url 'lion_detail' lion.id %}">{{ lion.name }} ({{ lion.track }})</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <p><a href="{% url 'lion_create' %}">아기사자 등록</a></p>
+</body>
+</html>
