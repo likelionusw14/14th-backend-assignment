@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'week8',
     'week3',
     'week6',
-    'week5',
+    'week7',
 ]
 
 MIDDLEWARE = [

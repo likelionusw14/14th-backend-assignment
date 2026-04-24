@@ -13,7 +13,7 @@ class Lion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'week6_lion'
+        db_table = 'week7_lion'
 
     def __str__(self):
         return f"[{self.track}] {self.name}"

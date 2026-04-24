@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 정보 수정</title>
+</head>
+<body>
+    <h1>🦁 아기사자 정보 수정</h1>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        <p>이름: <input type="text" name="name" value="{{ lion.name }}" required></p>
+        <p>트랙: 
+            <select name="track" required>
+                <option value="Django" {% if lion.track == "Django" %}selected{% endif %}>Django</option>
+                <option value="SpringBoot" {% if lion.track == "SpringBoot" %}selected{% endif %}>SpringBoot</option>
+                <option value="Frontend" {% if lion.track == "Frontend" %}selected{% endif %}>Frontend</option>
+                <option value="Design" {% if lion.track == "Design" %}selected{% endif %}>Design</option>
+            </select>
+        </p>
+        <button type="submit">수정 완료</button>
+    </form>
+    <br>
+    <a href="{% url 'lion_list' %}">목록으로</a>
+</body>
+</html>

@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'db_table': 'week6_lion',
+                'db_table': 'week7_lion',
             },
         ),
     ]
