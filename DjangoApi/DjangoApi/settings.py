@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'week3',
+    'week6',
     'week5',
 ]
 
@@ -80,8 +81,12 @@ WSGI_APPLICATION = 'DjangoApi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'lions',
+        'USER': 'root',
+        'PASSWORD': '1111',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
