@@ -1,0 +1,33 @@
+{% extends "lions/base.html" %}
+
+{% block content %}
+<h1>아기사자 수정</h1>
+
+{% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label>이름</label><br>
+        <input type="text" name="name" value="{{ lion.name }}">
+    </div>
+    <div>
+        <label>트랙</label><br>
+        <select name="track">
+            {% for value, label in track_choices %}
+                <option value="{{ value }}" {% if value == selected_track %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <button type="submit">수정 완료</button>
+</form>
+
+<hr>
+
+<a href="{% url 'lion_detail' lion.id %}">취소</a>
+{% endblock %}
