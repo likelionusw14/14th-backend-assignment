@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>아기사자 목록</title>
+</head>
+<body>
+    <h1>아기사자 목록</h1>
+    <ul>
+        {% for lion in lions_data %}
+            <li>{{ lion }}</li> {% endfor %}
+    </ul>
+
+    <hr> <a href="{% url 'home' %}">홈으로 돌아가기</a>
+</body>
+</html>
