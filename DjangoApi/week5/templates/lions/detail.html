@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 관리 서비스</title>
+</head>
+<body>
+    <h1>🦁 아기사자 관리 서비스</h1>
+    <hr>
+    <h2>아기사자 상세 정보</h2>
+
+    <p>이름: {{ lion.name }}</p>
+    <p>트랙: {{ lion.track }}</p>
+
+    <p>
+        <a href="{% url 'lion_list' %}">목록으로</a>
+        <a href="{% url 'lion_edit' lion.id %}">수정하기</a>
+    </p>
+
+    <form action="{% url 'lion_delete' lion.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">삭제하기</button>
+    </form>
+</body>
+</html>
