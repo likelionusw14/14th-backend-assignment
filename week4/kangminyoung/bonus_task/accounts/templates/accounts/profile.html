@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html><head>
+    <title>프로필</title>
+</head><body>
+    <h2>프로필 페이지</h2>
+    <p>{{ user.username }}님의 정보</p>
+    <p>아이디 : {{ user.username }}</p>
+    <p>이메일 : {{ user.email }}</p>
+    <p>가입일 : {{ user.date_joined }}</p>
+    <p>마지막 로그인 : {{ user.last_login }}</p>
+
+    <a href="{% url 'change_password' %}">
+        <button type="button">비밀번호 변경</button></a>
+        
+    <a href="{% url 'login' %}">
+        <button type="button">로그아웃</button></a>
