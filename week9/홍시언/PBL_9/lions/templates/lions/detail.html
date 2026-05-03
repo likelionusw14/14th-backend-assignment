@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 상세</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+            line-height: 1.5;
+            margin: 40px;
+            color: #000;
+        }
+        h2 { font-size: 24px; margin-bottom: 10px; }
+        h3 { font-size: 20px; margin-top: 30px; margin-bottom: 10px; }
+        ul { list-style-type: disc; padding-left: 20px; }
+        li { margin-bottom: 5px; }
+        
+        .actions { margin-top: 20px; }
+        .actions a, .actions button {
+            font-size: 14px;
+            text-decoration: none;
+            color: blue;
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        .actions button {
+            color: black;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            padding: 2px 8px;
+            margin-left: 5px;
+            border-radius: 3px;
+        }
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 (이모지 포함) -->
+    <div style="font-weight: bold; font-size: 18px; margin-bottom: 20px;">
+        🦁 아기사자 관리 서비스
+    </div>
+
+    <hr>
+
+    <!-- 2. 상세 정보 -->
+    <h2>아기사자 상세</h2>
+    <ul>
+        <li>이름: {{ lion.name }}</li>
+        <li>트랙: {{ lion.get_track_display }}</li>
+    </ul>
+
+    <hr>
+
+    <!-- 3. 성장 과제 (1:N 연관관계) -->
+    <h3>성장 과제</h3>
+    <ul>
+        {% for task in lion.tasks.all %}
+            <li>{{ task.title }}</li>
+        {% empty %}
+            <li>등록된 과제가 없습니다.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- 4. 수정/삭제 버튼 -->
+    <div class="actions">
+      <!-- # 대신에 실제 주소인 lion_update를 넣어줍니다 -->
+      <a href="{% url 'lion_update' lion.id %}" style="color: blue; text-decoration: underline;">수정</a>
+    
+      <form method="POST" action="{% url 'lion_delete' lion.id %}" style="display: inline;" 
+          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+      </form>
+    </div>
+
+    <!-- 5. 목록으로 이동 -->
+    <a href="{% url 'lion_list' %}" class="back-link">목록으로</a>
+
+</body>
+</html>

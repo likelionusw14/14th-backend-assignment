@@ -1,0 +1,28 @@
+<!-- lions/templates/lions/edit.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: -apple-system, sans-serif; margin: 40px; }
+        input, select { margin-bottom: 10px; display: block; padding: 5px; width: 200px; }
+        button { cursor: pointer; padding: 5px 15px; }
+    </style>
+</head>
+<body>
+    <h2>🦁 아기사자 정보 수정</h2>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        이름: <input type="text" name="name" value="{{ lion.name }}" required>
+        트랙: 
+        <select name="track">
+            <option value="FE" {% if lion.track == 'FE' %}selected{% endif %}>Frontend</option>
+            <option value="BE" {% if lion.track == 'BE' %}selected{% endif %}>Backend</option>
+            <option value="DE" {% if lion.track == 'DE' %}selected{% endif %}>Design</option>
+        </select>
+        <button type="submit">수정 완료</button>
+        <a href="{% url 'lion_detail' lion.id %}" style="margin-left: 10px; color: gray;">취소</a>
+    </form>
+</body>
+</html>
