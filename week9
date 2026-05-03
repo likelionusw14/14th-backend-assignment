@@ -1,0 +1,173 @@
+from django.db import models
+
+
+
+class Lion(models.Model):
+
+    TRACK_CHOICES = (
+
+        ('front', 'Front-end'),
+
+        ('back', 'Back-end'),
+
+        ('design', 'Design'),
+
+        ('pm', 'PM'),
+
+    )
+
+    name = models.CharField(max_length=50, verbose_name="아기사자 이름")
+
+    track = models.CharField(max_length=20, choices=TRACK_CHOICES, verbose_name="트랙")
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="등록일")
+
+
+
+    def __str__(self):
+
+        return self.name
+
+
+
+
+
+class Task(models.Model):
+
+    # 1:N 연관관계 (Lion:Task)
+
+    lion = models.ForeignKey(Lion, on_delete=models.CASCADE, related_name='tasks')
+
+    title = models.CharField(max_length=100, verbose_name="과제 제목")
+
+    completed = models.BooleanField(default=False, verbose_name="완료 여부")
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일")
+
+
+
+    def __str__(self):
+
+        return self.title
+
+
+
+
+
+class LionProfile(models.Model):
+
+    # 1:1 연관관계 (Lion:LionProfile)
+
+    lion = models.OneToOneField(Lion, on_delete=models.CASCADE, related_name='profile')
+
+    github_url = models.URLField(blank=True, verbose_name="GitHub 주소")
+
+    bio = models.TextField(blank=True, verbose_name="자기소개")
+
+
+
+    def __str__(self):
+
+        return f"{self.lion.name}의 프로필"
+
+
+
+
+
+class Tag(models.Model):
+
+    # N:M 연관관계 (Lion:Tag)
+
+    name = models.CharField(max_length=50, unique=True, verbose_name="태그명")
+
+    lions = models.ManyToManyField(Lion, related_name='tags', blank=True)
+
+
+
+    def __str__(self):
+
+        return self.name
+
+
+
+
+
+from django.contrib import admin
+
+from .models import Lion, Task, LionProfile, Tag
+
+
+
+@admin.register(Lion)
+
+class LionAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'name', 'track', 'created_at')
+
+
+
+@admin.register(Task)
+
+class TaskAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'lion', 'title', 'completed', 'created_at')
+
+
+
+@admin.register(LionProfile)
+
+class LionProfileAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'lion', 'github_url')
+
+
+
+@admin.register(Tag)
+
+class TagAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'name')
+
+
+
+
+
+from django.shortcuts import render, redirect
+
+from django.db import transaction
+
+from .models import Lion, Task, LionProfile
+
+
+
+@transaction.atomic
+
+def lion_create(request):
+
+    if request.method == 'POST':
+
+        name = request.POST.get('name')
+
+        track = request.POST.get('track')
+
+
+
+        # 1. Lion 생성
+
+        lion = Lion.objects.create(name=name, track=track)
+
+
+
+        # 2. 기본 Task 3개 자동 생성
+
+        Task.objects.create(lion=lion, title="Django 환경 세팅")
+
+        Task.objects.create(lion=lion, title="모델 연관관계 설계")
+
+        Task.objects.create(lion=lion, title="트랜잭션 실습")
+
+
+
+        # 3. 빈 LionProfile 자동 생성
+
+        LionProfile.objects.create(lion=lion)
