@@ -1,0 +1,378 @@
+# lions/models.py
+
+from django.db import models
+
+
+
+class Lion(models.Model):
+
+    name = models.CharField(max_length=50)  # 이름 (필수값은 HTML form과 뷰에서 제어)
+
+    track = models.CharField(max_length=50, blank=True)  # 트랙 (선택적 입력 가능)
+
+
+
+    def __str__(self):
+
+        return self.name
+
+
+
+# lions/urls.py
+
+from django.urls import path
+
+from . import views
+
+
+
+app_name = 'lions'
+
+
+
+urlpatterns = [
+
+    path('', views.index, name='index'),                     # /lions/ 접속 시 (목록 및 검색)
+
+    path('new/', views.new, name='new'),                     # /lions/new/ 접속 시 (등록)
+
+    path('<int:pk>/', views.detail, name='detail'),          # /lions/1/ 접속 시 (상세)
+
+    path('<int:pk>/edit/', views.edit, name='edit'),         # /lions/1/edit/ 접속 시 (수정)
+
+    path('<int:pk>/delete/', views.delete, name='delete'),   # 삭제 처리 (POST 요청)
+
+]
+
+
+
+# lions/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .models import Lion
+
+
+
+# 1. 목록 조회 및 검색 (/lions/)
+
+def index(request):
+
+    keyword = request.GET.get('keyword', '')
+
+    if keyword:
+
+        # 이름에 키워드가 포함된 데이터만 필터링
+
+        lions = Lion.objects.filter(name__icontains=keyword)
+
+    else:
+
+        # 키워드가 없으면 전체 데이터 조회
+
+        lions = Lion.objects.all()
+
+    
+
+    context = {
+
+        'lions': lions,
+
+        'keyword': keyword,
+
+    }
+
+    return render(request, 'lions/index.html', context)
+
+
+
+# 2. 상세 조회 (/lions/1/)
+
+def detail(request, pk):
+
+    lion = get_object_or_404(Lion, pk=pk)
+
+    return render(request, 'lions/detail.html', {'lion': lion})
+
+
+
+# 3. 데이터 생성 (/lions/new/)
+
+def new(request):
+
+    if request.method == 'POST':
+
+        name = request.POST.get('name')
+
+        track = request.POST.get('track')
+
+        
+
+        if name: # 이름은 필수 입력값이므로 체크
+
+            Lion.objects.create(name=name, track=track)
+
+            return redirect('lions:index') # 등록 완료 시 목록으로 리다이렉트
+
+            
+
+    return render(request, 'lions/new.html')
+
+
+
+# 4. 데이터 수정 (/lions/1/edit/)
+
+def edit(request, pk):
+
+    lion = get_object_or_404(Lion, pk=pk)
+
+    
+
+    if request.method == 'POST':
+
+        lion.name = request.POST.get('name')
+
+        lion.track = request.POST.get('track')
+
+        
+
+        if lion.name:
+
+            lion.save() # 변경사항 저장
+
+            return redirect('lions:detail', pk=lion.pk) # 수정 후 상세 페이지로 리다이렉트
+
+            
+
+    return render(request, 'lions/edit.html', {'lion': lion})
+
+
+
+# 5. 데이터 삭제 (POST 요청 전용)
+
+def delete(request, pk):
+
+    lion = get_object_or_404(Lion, pk=pk)
+
+    if request.method == 'POST':
+
+        lion.delete()
+
+        return redirect('lions:index')
+
+    # GET 요청 등으로 잘못 접근 시 상세페이지로 돌려보냄
+
+    return redirect('lions:detail', pk=lion.pk)
+
+
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>아기사자 관리 서비스</title>
+
+</head>
+
+<body>
+
+    <h1>아기사자 목록</h1>
+
+    
+
+    <form action="{% url 'lions:index' %}" method="GET">
+
+        <input type="text" name="keyword" value="{{ keyword }}" placeholder="이름 검색 입력창">
+
+        <button type="submit">검색 버튼</button>
+
+    </form>
+
+    
+
+    <br>
+
+    
+
+    <ul>
+
+        {% for lion in lions %}
+
+            <li>
+
+                <a href="{% url 'lions:detail' lion.pk %}">
+
+                    {{ lion.name }} ({{ lion.track }})
+
+                </a>
+
+            </li>
+
+        {% empty %}
+
+            <li>등록된 아기사자가 없습니다.</li>
+
+        {% endfor %}
+
+    </ul>
+
+
+
+    <br>
+
+    <a href="{% url 'lions:new' %}">아기사자 등록</a>
+
+</body>
+
+</html>
+
+
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>아기사자 상세</title>
+
+</head>
+
+<body>
+
+    <h1>아기사자 상세</h1>
+
+    
+
+    <p>이름: {{ lion.name }}</p>
+
+    <p>트랙: {{ lion.track }}</p>
+
+    
+
+    <a href="{% url 'lions:edit' lion.pk %}">[수정]</a>
+
+    
+
+    <form action="{% url 'lions:delete' lion.pk %}" method="POST" style="display:inline;">
+
+        {% csrf_token %}
+
+        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</button>
+
+    </form>
+
+    
+
+    <br><br>
+
+    <a href="{% url 'lions:index' %}">목록으로</a>
+
+</body>
+
+</html>
+
+
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>아기사자 수정</title>
+
+</head>
+
+<body>
+
+    <h1>아기사자 수정</h1>
+
+    
+
+    <form action="" method="POST">
+
+        {% csrf_token %}
+
+        <label>이름 입력칸:</label>
+
+        <input type="text" name="name" value="{{ lion.name }}" required><br><br>
+
+        
+
+        <label>트랙 입력칸:</label>
+
+        <input type="text" name="track" value="{{ lion.track }}"><br><br>
+
+        
+
+        <button type="submit">[수정 완료]</button>
+
+    </form>
+
+    
+
+    <br>
+
+    <a href="{% url 'lions:detail' lion.pk %}">취소</a>
+
+</body>
+
+</html>
+
+
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>아기사자 등록</title>
+
+</head>
+
+<body>
+
+    <h1>아기사자 등록</h1>
+
+    
+
+    <form action="" method="POST">
+
+        {% csrf_token %} <label>이름 입력칸:</label>
+
+        <input type="text" name="name" required><br><br>
+
+        
+
+        <label>트랙 입력칸:</label>
+
+        <input type="text" name="track"><br><br>
+
+        
+
+        <button type="submit">[등록]</button>
+
+    </form>
+
+    
+
+    <br>
+
+    <a href="{% url 'lions:index' %}">목록으로</a>
+
+</body>
+
+</html>
+
