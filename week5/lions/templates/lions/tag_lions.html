@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>#{{ tag.name }} 태그를 가진 아기사자</h1>
+
+<ul>
+  {% for lion in lions %}
+    <li>
+      <a href="{% url 'lion_detail' lion.id %}">
+        {{ lion.name }} ({{ lion.track }})
+      </a>
+    </li>
+  {% empty %}
+    <li>이 태그를 가진 아기사자가 없습니다.</li>
+  {% endfor %}
+</ul>
+
+<hr>
+<a href="{% url 'lion_list' %}">목록으로</a>
+
+{% endblock %}
