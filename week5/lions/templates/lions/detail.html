@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>아기사자 상세</h1>
+
+<ul>
+  <li>이름: {{ lion.name }}</li>
+  <li>트랙: {{ lion.track }}</li>
+</ul>
+
+<hr>
+
+{# ── 프로필 (1:1) ──────────────────────────────── #}
+<h2>프로필</h2>
+<ul>
+  <li>GitHub:
+    {% if profile.github_url %}
+      <a href="{{ profile.github_url }}" target="_blank">{{ profile.github_url }}</a>
+    {% else %}
+      (등록된 링크 없음)
+    {% endif %}
+  </li>
+  <li>자기소개: {{ profile.bio|default:"(자기소개 없음)" }}</li>
+</ul>
+<a href="{% url 'profile_edit' lion.id %}">프로필 수정</a>
+
+<hr>
+
+{# ── 태그 (N:M) ────────────────────────────────── #}
+<h2>태그</h2>
+<p>현재 태그:
+  {% for tag in lion.tags.all %}
+    <a href="{% url 'tag_lions' tag.id %}">#{{ tag.name }}</a>
+  {% empty %}
+    (없음)
+  {% endfor %}
+</p>
+
+<p>전체 태그 토글:</p>
+<div>
+  {% for tag in all_tags %}
+    <form method="post"
+          action="{% url 'tag_toggle' lion.id tag.id %}"
+          style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">
+        {% if tag.id in lion_tag_ids %}
+          ✓ #{{ tag.name }} (제거)
+        {% else %}
+          + #{{ tag.name }} (추가)
+        {% endif %}
+      </button>
+    </form>
+  {% empty %}
+    <p>등록된 태그가 없습니다. (관리자 페이지에서 추가하세요)</p>
+  {% endfor %}
+</div>
+
+<hr>
+
+{# ── 성장 과제 (1:N) ───────────────────────────── #}
+<h2>성장 과제</h2>
+<p>표시 중인 과제 수: {{ task_count }}</p>
+
+<a href="?">전체</a> |
+<a href="?status=todo"
+   {% if status == "todo" %}style="font-weight:bold;"{% endif %}>
+   미완료
+</a> |
+<a href="?status=done"
+   {% if status == "done" %}style="font-weight:bold;"{% endif %}>
+   완료
+</a>
+
+<ul>
+  {% for task in tasks %}
+    <li>
+      {{ task.title }}
+      {% if task.completed %}(완료){% else %}(미완료){% endif %}
+
+      <form method="post"
+            action="{% url 'task_toggle' lion.id task.id %}"
+            style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">
+          {% if task.completed %}완료취소{% else %}완료{% endif %}
+        </button>
+      </form>
+    </li>
+  {% empty %}
+    <li>등록된 과제가 없습니다.</li>
+  {% endfor %}
+</ul>
+
+<hr>
+
+<a href="{% url 'lion_edit' lion.id %}">수정</a>
+
+<form method="post"
+      action="{% url 'lion_delete' lion.id %}"
+      style="display:inline;"
+      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+  {% csrf_token %}
+  <button type="submit">삭제</button>
+</form>
+
+<hr>
+
+<a href="{% url 'lion_list' %}">목록으로</a>
+
+{% endblock %}
