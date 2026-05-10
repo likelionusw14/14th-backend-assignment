@@ -1,0 +1,22 @@
+<head>
+    <style>
+        body { font-family: -apple-system, sans-serif; margin: 40px; }
+        input, select { margin-bottom: 10px; display: block; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h2>🦁 새로운 아기사자 등록</h2>
+    <form action="{% url 'lion_create' %}" method="POST">
+        {% csrf_token %}
+        이름: <input type="text" name="name" required>
+        트랙: 
+        <select name="track">
+            <option value="FE">Frontend</option>
+            <option value="BE">Backend</option>
+            <option value="DE">Design</option>
+        </select>
+        <button type="submit">등록하기</button>
+    </form>
+    <br>
+    <a href="{% url 'lion_list' %}">목록으로 돌아가기</a>
+</body>

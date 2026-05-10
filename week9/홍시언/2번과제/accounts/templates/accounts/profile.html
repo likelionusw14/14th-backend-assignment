@@ -1,0 +1,9 @@
+<h2>내 정보</h2>
+<ul>
+    <li>ID: {{ user.username }}</li>
+    <li>Email: {{ user.email }}</li>
+    <li>가입일: {{ user.date_joined }}</li>
+</ul>
+<hr>
+<a href="{% url 'accounts:change_password' %}">비밀번호 변경하기</a> |
+<a href="{% url 'accounts:success' %}">돌아가기</a>
