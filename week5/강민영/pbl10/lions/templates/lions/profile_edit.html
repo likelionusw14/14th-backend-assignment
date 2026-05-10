@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ lion.name }}의 프로필 수정</h1>
+<form method="post">
+  {% csrf_token %}
+  <div>
+    <label>GitHub 주소</label><br>
+    <input type="url" name="github_url" value="{{ lion.profile.github_url }}">
+  </div><br>
+  <div>
+    <label>자기소개</label><br>
+    <textarea name="bio" rows="5" cols="30">{{ lion.profile.bio }}</textarea>
+  </div><br>
+  <button type="submit">저장하기</button>
+</form>
+<hr>
+<a href="{% url 'lion_detail' lion.id %}">취소</a>
+{% endblock %}
