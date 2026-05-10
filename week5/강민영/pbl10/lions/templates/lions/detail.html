@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>아기사자 상세</h1>
+<ul>
+  <li>이름: {{ lion.name }}</li>
+  <li>트랙: {{ lion.get_track_display }}</li>
+</ul>
+
+<hr>
+<h2>나의 프로필 (1:1)</h2>
+<p><strong>GitHub:</strong> <a href="{{ lion.profile.github_url }}" target="_blank">{{ lion.profile.github_url|default:"미등록" }}</a></p>
+<p><strong>자기소개:</strong> {{ lion.profile.bio|default:"자기소개가 없습니다." }}</p>
+<a href="{% url 'profile_edit' lion.id %}">프로필 수정하기</a>
+
+<hr>
+<h2>성장 과제 (1:N)</h2>
+<p>전체 과제 수: {{ lion.tasks.count }}</p>
+<ul>
+  {% for task in lion.tasks.all %}
+    <li>
+      {{ task.title }} - {% if task.completed %}✅ 완료{% else %}❌ 미완료{% endif %}
+      <form method="post" action="{% url 'task_toggle' lion.id task.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">토글</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+<hr>
+<h2>관심 태그 (N:M)</h2>
+<div>
+  {% for tag in all_tags %}
+    <form action="{% url 'tag_toggle' lion.id tag.id %}" method="post" style="display:inline;">
+      {% csrf_token %}
+    <button type="submit" class="tag-btn {% if tag in lion.tags.all %}tag-active{% else %}tag-inactive{% endif %}">
+        #{{ tag.name }}
+    </button>
+        #{{ tag.name }}
+      </button>
+    </form>
+  {% endfor %}
+</div>
+
+<hr>
+<a href="{% url 'lion_edit' lion.id %}">기본 정보 수정</a>
+<form method="post" action="{% url 'lion_delete' lion.id %}" style="display:inline;" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+  {% csrf_token %}
+  <button type="submit">사자 삭제 (CASCADE 테스트)</button>
+</form>
+<br><br>
+<a href="{% url 'lion_list' %}">목록으로</a>
+{% endblock %}
