@@ -1,0 +1,135 @@
+{% extends "lions/base.html" %}
+
+{% block content %}
+<h1>아기사자 상세</h1>
+
+<ul>
+    <li>이름: {{ lion.name }}</li>
+    <li>트랙: {{ lion.track }}</li>
+    <li>생성일: {{ lion.created_at|date:"Y-m-d H:i" }}</li>
+</ul>
+
+<hr>
+
+<h2>Task 목록</h2>
+<p>총 {{ task_count }}개의 Task가 있습니다.</p>
+
+{% if task_error_message %}
+    <p style="color: red;">{{ task_error_message }}</p>
+{% endif %}
+
+<form method="post" action="{% url 'task_create' lion.id %}">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Task 제목">
+    <button type="submit">Task 추가</button>
+</form>
+
+<p>
+    <a href="{% url 'lion_detail' lion.id %}">전체</a>
+    <a href="{% url 'lion_detail' lion.id %}?task_status=incomplete">미완료</a>
+    <a href="{% url 'lion_detail' lion.id %}?task_status=completed">완료</a>
+</p>
+
+<ul>
+    {% for task in tasks %}
+        <li>
+            {% if task.completed %}
+                [완료]
+            {% else %}
+                [미완료]
+            {% endif %}
+            {{ task.title }}
+            <form
+                method="post"
+                action="{% url 'task_toggle' lion.id task.id %}"
+                style="display: inline;"
+            >
+                {% csrf_token %}
+                <button type="submit">완료 상태 변경</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>표시할 Task가 없습니다.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>프로필</h2>
+<p>GitHub: {{ profile.github_url|default:"등록된 GitHub 주소가 없습니다." }}</p>
+<p>소개: {{ profile.bio|default:"등록된 소개가 없습니다." }}</p>
+
+<form method="post" action="{% url 'profile_edit' lion.id %}">
+    {% csrf_token %}
+    <div>
+        <label>GitHub 주소</label><br>
+        <input type="url" name="github_url" value="{{ profile.github_url }}">
+    </div>
+    <div>
+        <label>자기소개</label><br>
+        <textarea name="bio" rows="4" cols="40">{{ profile.bio }}</textarea>
+    </div>
+    <button type="submit">프로필 저장</button>
+</form>
+
+<hr>
+
+<h2>태그</h2>
+<ul>
+    {% for tag in lion_tags %}
+        <li>
+            {{ tag.name }}
+            <form
+                method="post"
+                action="{% url 'tag_toggle' lion.id %}"
+                style="display: inline;"
+            >
+                {% csrf_token %}
+                <input type="hidden" name="name" value="{{ tag.name }}">
+                <button type="submit">제거</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>등록된 태그가 없습니다.</li>
+    {% endfor %}
+</ul>
+
+<form method="post" action="{% url 'tag_toggle' lion.id %}">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="태그명">
+    <button type="submit">태그 추가 또는 제거</button>
+</form>
+
+{% if available_tags %}
+    <p>기존 태그</p>
+    {% for tag in available_tags %}
+        <form
+            method="post"
+            action="{% url 'tag_toggle' lion.id %}"
+            style="display: inline;"
+        >
+            {% csrf_token %}
+            <input type="hidden" name="name" value="{{ tag.name }}">
+            <button type="submit">{{ tag.name }}</button>
+        </form>
+    {% endfor %}
+{% endif %}
+
+<hr>
+
+<a href="{% url 'lion_edit' lion.id %}">수정</a>
+
+<form
+    method="post"
+    action="{% url 'lion_delete' lion.id %}"
+    style="display: inline;"
+    onsubmit="return confirm('정말 삭제하시겠습니까?');"
+>
+    {% csrf_token %}
+    <button type="submit">삭제</button>
+</form>
+
+<hr>
+
+<a href="{% url 'lion_list' %}">목록으로</a>
+{% endblock %}
