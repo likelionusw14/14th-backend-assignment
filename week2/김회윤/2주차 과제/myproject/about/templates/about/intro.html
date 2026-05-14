@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자기소개</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial;
+            padding: 40px;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 20px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>{{ name }}</h1>
+        <p>{{ role }}</p>
+
+        <p>{{ description }}</p>
+
+        <h3>기술 스택</h3>
+        {% for skill in skills %}
+            <span class="badge">{{ skill }}</span>
+        {% endfor %}
+
+        <h3>연락처</h3>
+        <p>{{ email }}</p>
+    </div>
+</body>
+</html>
