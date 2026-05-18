@@ -1,0 +1,135 @@
+class Member:
+
+    def __init__(self, name: str):
+
+        self.name = name
+
+
+
+class Lion(Member):
+
+    def __init__(self, name: str, track: str = "기본", num: str = "00"):
+
+        super().__init__(name)
+
+        self.track = track
+
+        self.num = num
+
+
+
+    def role(self):
+
+        return '🦁 아기사자'
+
+
+
+    def get_info(self):
+
+        return f'{self.name} | {self.track} | {self.num}'
+
+
+
+class Staff(Member):
+
+    def __init__(self, name: str):
+
+        super().__init__(name)
+
+
+
+    def role(self):
+
+        return '😎 운영진'
+
+
+
+    def get_info(self):
+
+        return f'{self.name} | 운영진'
+
+
+
+class Manager:
+
+    def __init__(self):
+
+        self.members = []
+
+
+
+    def add_member(self, member):
+
+        self.members.append(member)
+
+
+
+    def display_lions(self):
+
+        print("\n📋 현재 아기 사자 명단입니다.")
+
+        # Lion 객체만 필터링해서 출력
+
+        lions = [m for m in self.members if isinstance(m, Lion)]
+
+        for i, lion in enumerate(lions, 1):
+
+            print(f"🦁 {i}. {lion.name}")
+
+
+
+# --- 메인 프로그램 실행 ---
+
+
+
+manager = Manager()
+
+
+
+print("🦁 아기 사자 명단 관리 프로그램입니다.")
+
+
+
+while True:
+
+    # ✏️ 이모티콘은 터미널 환경에 따라 다르게 보일 수 있으나 데이터 자체는 깨지지 않습니다.
+
+    name_input = input("✏️ 아기 사자 이름을 입력하세요 (종료하려면 q 입력): ").strip()
+
+
+
+    # 종료 조건
+
+    if name_input.lower() == 'q':
+
+        print("\n📌 이름 입력을 종료합니다.")
+
+        break
+
+
+
+    # 공백 입력 예외 처리
+
+    if not name_input:
+
+        print("⚠️ 이름이 비어있습니다. 다시 입력해주세요.")
+
+        continue
+
+
+
+    # 객체 생성 및 등록
+
+    new_lion = Lion(name_input)
+
+    manager.add_member(new_lion)
+
+    print(f"✅ '{name_input}' 이(가) 등록되었습니다.")
+
+
+
+# 최종 명단 출력
+
+manager.display_lions()
+
+
