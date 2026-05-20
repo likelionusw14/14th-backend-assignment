@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 등록</title>
+</head>
+<body>
+    <h1>아기사자 등록</h1>
+
+    <form method="post" action="/lions/new">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="이름을 입력하세요">
+        <button type="submit">등록</button>
+    </form>
+
+    <a href="/lions">목록으로</a>
+</body>
+</html>
