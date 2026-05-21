@@ -1,0 +1,14 @@
+<h2>로그인에 성공했습니다!</h2>
+<p>{{ user.username }}님, 환영합니다.</p>
+
+<a href="{% url 'profile' %}">
+    <button type="button">내 프로필</button>
+</a>
+
+<a href="{% url 'change_password' %}">
+    <button type="button">비밀번호 변경</button>
+</a>
+
+<a href="{% url 'login' %}">
+    <button type="button">로그아웃</button>
+</a>
