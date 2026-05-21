@@ -1,0 +1,7 @@
+{% extends 'baby_lion/base.html' %} {% block content %}
+<h1>아기사자 목록</h1>
+{% for lion in lions %}
+<p>-<a href="{% url 'lion_detail' lion.name %}">{{ lion.name }}</a></p>
+{% endfor %}
+<a href="{% url 'index' %}">홈으로 돌아가기</a>
+{% endblock %}
