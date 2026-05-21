@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기사자 관리 서비스</title>
+</head>
+<body>
+    <h1>🦁 아기사자 관리 서비스</h1>
+    <hr>
+    <h2>아기사자 수정</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            이름<br>
+            <input type="text" name="name" value="{{ lion.name }}" required>
+        </p>
+        <p>
+            트랙<br>
+            <input type="text" name="track" value="{{ lion.track }}" required>
+        </p>
+        <button type="submit">수정 완료</button>
+    </form>
+    
+    <p><a href="{% url 'lion_detail' lion.id %}">취소</a></p>
+</body>
+</html>
